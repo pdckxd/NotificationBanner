@@ -102,7 +102,7 @@ open class BaseNotificationBanner: UIView {
     }
 
     /// The type of haptic to generate when a banner is displayed
-    public var haptic: BannerHaptic = .heavy
+    public var haptic: BannerHaptic = .none
 
     /// If true, notification will dismissed when tapped
     public var dismissOnTap: Bool = true
@@ -434,7 +434,9 @@ open class BaseNotificationBanner: UIView {
                 initialSpringVelocity: 1,
                 options: [.curveLinear, .allowUserInteraction],
                 animations: {
-                    BannerHapticGenerator.generate(self.haptic)
+                 #if !os(tvOS) 
+                  BannerHapticGenerator.generate(self.haptic)
+                 #endif
                     self.frame = self.bannerPositionFrame.endFrame
             }) { (completed) in
 
