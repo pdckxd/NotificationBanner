@@ -24,19 +24,34 @@ public enum BannerHaptic {
     case heavy
     case none
 
-    @available(iOS 10.0, *)
-    var impactStyle: UIImpactFeedbackGenerator.FeedbackStyle? {
-        switch self {
-        case .light:
-            return .light
-        case .medium:
-            return .medium
-        case .heavy:
-            return .heavy
-        case .none:
-            return nil
-        }
-    }
+    #if !os(tvOS) 
+     @available(iOS 10.0, *)
+     var impactStyle: UIImpactFeedbackGenerator.FeedbackStyle? {
+         switch self {
+         case .light:
+             return .light
+         case .medium:
+             return .medium
+         case .heavy:
+             return .heavy
+         case .none:
+             return nil
+         }
+     }
+     #else
+     var impactStyle {
+     switch self {
+            case .light:
+                return nil
+            case .medium:
+                return nil
+            case .heavy:
+                return nil
+            case .none:
+                return nil
+            }
+     }
+    #endif
 }
 
 open class BannerHapticGenerator: NSObject {
@@ -47,8 +62,10 @@ open class BannerHapticGenerator: NSObject {
      */
     open class func generate(_ haptic: BannerHaptic) {
         guard let style = haptic.impactStyle else { return }
+     #if !os(tvOS) 
         let feedbackGenerator = UIImpactFeedbackGenerator(style: style)
         feedbackGenerator.prepare()
         feedbackGenerator.impactOccurred()
+     #endif
     }
 }
