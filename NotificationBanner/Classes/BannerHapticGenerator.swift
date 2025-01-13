@@ -39,7 +39,7 @@ public enum BannerHaptic {
          }
      }
      #else
-     var impactStyle {
+     var impactStyle: String? {
      switch self {
             case .light:
                 return nil
